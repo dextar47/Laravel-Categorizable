@@ -1,5 +1,5 @@
 {
-  "name": "alibayat/laravel-categorizable",
+  "name": "dextar47/laravel-categorizable",
   "description": "Implementing Nested-structure Hierarchy Categories system for Eloquent models.",
   "license": "MIT",
   "keywords": [
