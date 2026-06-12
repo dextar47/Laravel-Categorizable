@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\{Collection, Str};
 use Kalnoy\Nestedset\{AncestorsRelation, DescendantsRelation};
+use PHPUnit\Framework\Attributes\Test;
 
 class CategoryTest extends TestCase
 {
@@ -43,10 +44,7 @@ class CategoryTest extends TestCase
 		$this->level2Category->appendNode($this->level3Category);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_generates_a_slug_on_the_fly(): void
 	{
 		$title = $this->faker->words(2, true);
@@ -57,10 +55,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($slug, $category->fresh()->slug);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_generates_a_slug_for_persian_characters(): void
 	{
 		$title = "جامعه فارسی زبانان";
@@ -70,10 +65,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($slug, $category->fresh()->slug);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_parent_relationship(): void
 	{
 		$this->assertInstanceOf(Category::class, $this->level2Category->parent);
@@ -81,10 +73,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level2Category->parent->id, $this->level1Category->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_children_relationship(): void
 	{
 		$this->assertInstanceOf(Collection::class, $this->level2Category->children);
@@ -93,10 +82,7 @@ class CategoryTest extends TestCase
 		$this->assertCount(1, $this->level2Category->fresh()->children);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_an_ancestors_relationship(): void
 	{
 		$this->assertInstanceOf(Collection::class, $this->level3Category->ancestors);
@@ -105,10 +91,7 @@ class CategoryTest extends TestCase
 		$this->assertCount(2, $this->level3Category->fresh()->ancestors);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_descendants_relationship(): void
 	{
 		$this->assertInstanceOf(Collection::class, $this->level1Category->descendants);
@@ -117,10 +100,7 @@ class CategoryTest extends TestCase
 		$this->assertCount(2, $this->level1Category->fresh()->descendants);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_ancestors_of_method(): void
 	{
 		$ancestorsOf = Category::ancestorsOf($this->level3Category->id);
@@ -129,10 +109,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level1Category->id, $ancestorsOf->first()->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_ancestors_and_self_method(): void
 	{
 		$ancestorsAndSelf = Category::ancestorsAndSelf($this->level3Category->id);
@@ -142,10 +119,7 @@ class CategoryTest extends TestCase
 		
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_descendants_of_method(): void
 	{
 		$descendantsOf = Category::descendantsOf($this->level1Category->id);
@@ -155,10 +129,7 @@ class CategoryTest extends TestCase
 		
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_descendants_and_self_method(): void
 	{
 		$descendantsAndSelf = Category::descendantsAndSelf($this->level1Category->id);
@@ -167,10 +138,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level1Category->id, $descendantsAndSelf->first()->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_reversed_method(): void
 	{
 		$result = Category::reversed()->get();
@@ -179,10 +147,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level1Category->id, $result[2]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_to_tree_method(): void
 	{
 		$tree = Category::get()->toTree();
@@ -191,10 +156,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $tree[0]['children'][0]['children'][0]['id']);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_to_flat_tree_method(): void
 	{
 		$flatTree = Category::get()->toFlatTree();
@@ -203,10 +165,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $flatTree[2]['id']);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_knows_about_its_depth(): void
 	{
 		$this->assertEquals(0, Category::withDepth()->find($this->level1Category->id)->depth);
@@ -214,10 +173,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals(2, Category::withDepth()->find($this->level3Category->id)->depth);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_knows_about_its_siblings(): void
 	{
 		$this->assertCount(0, $this->level3Category->getSiblings());
@@ -241,10 +197,7 @@ class CategoryTest extends TestCase
 		$this->assertCount(2, $sibling2->getPrevSiblings());
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_is_root_constraint(): void
 	{
 		$root = Category::whereIsRoot()->get();
@@ -252,10 +205,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level1Category->id, $root[0]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_has_parent_constraint(): void
 	{
 		$withParents = Category::hasParent()->get();
@@ -264,10 +214,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $withParents[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_is_leaf_constraint(): void
 	{
 		$leafs = Category::whereIsLeaf()->get();
@@ -284,10 +231,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($otherLeaf->id, $leafs[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_has_children_constraint(): void
 	{
 		$withChildren = Category::hasChildren()->get();
@@ -306,10 +250,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $withChildren[2]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_is_after_constraint(): void
 	{
 		$nodesAfter = Category::whereIsAfter($this->level1Category->id)->get();
@@ -318,10 +259,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $nodesAfter[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_is_before_constraint(): void
 	{
 		$nodesBefore = Category::whereIsBefore($this->level3Category->id)->get();
@@ -330,10 +268,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level2Category->id, $nodesBefore[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_descendant_of_constraint(): void
 	{
 		$descendantOf = Category::whereDescendantOf($this->level1Category)->get();
@@ -342,10 +277,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $descendantOf[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_not_descendant_of_constraint(): void
 	{
 		$notDescendantOf = Category::whereNotDescendantOf($this->level1Category)->get();
@@ -359,10 +291,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $notDescendantOf[2]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_or_where_descendant_of_constraint(): void
 	{
 		$orDescendantOf = Category::orWhereDescendantOf($this->level1Category)->get();
@@ -371,10 +300,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $orDescendantOf[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_or_where_not_descendant_of_constraint(): void
 	{
 		$orNotDescendantOf = Category::orWhereNotDescendantOf($this->level2Category)->get();
@@ -383,10 +309,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level2Category->id, $orNotDescendantOf[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_descendant_or_self_constraint(): void
 	{
 		$descendantOrSelf = Category::whereDescendantOrSelf($this->level1Category->id)->get();
@@ -396,10 +319,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $descendantOrSelf[2]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_ancestor_of_constraint(): void
 	{
 		$ancestorOf = Category::whereAncestorOf($this->level3Category->id)->get();
@@ -408,10 +328,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level2Category->id, $ancestorOf[1]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_where_ancestor_or_self_constraint(): void
 	{
 		$ancestorOrSelf = Category::whereAncestorOrSelf($this->level3Category->id)->get();
@@ -421,10 +338,7 @@ class CategoryTest extends TestCase
 		$this->assertEquals($this->level3Category->id, $ancestorOrSelf[2]->id);
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_is_root_check(): void
 	{
 		$this->assertTrue($this->level1Category->isRoot());
@@ -432,10 +346,7 @@ class CategoryTest extends TestCase
 		$this->assertFalse($this->level3Category->isRoot());
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_is_child_of_check(): void
 	{
 		$this->assertTrue($this->level3Category->isChildOf($this->level2Category));
@@ -445,10 +356,7 @@ class CategoryTest extends TestCase
 		$this->assertFalse($this->level2Category->isChildOf($this->level3Category));
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_ancestor_of_check(): void
 	{
 		$this->assertTrue($this->level1Category->isAncestorOf($this->level2Category));
@@ -460,10 +368,7 @@ class CategoryTest extends TestCase
 		$this->assertFalse($this->level3Category->isAncestorOf($this->level1Category));
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_is_sibling_of_check(): void
 	{
 		$this->level2Category->appendNode(
@@ -476,10 +381,7 @@ class CategoryTest extends TestCase
 		$this->assertFalse($this->level1Category->isSiblingOf($this->level3Category));
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function it_has_a_is_leaf_check(): void
 	{
 		$this->assertFalse($this->level1Category->isLeaf());
@@ -487,10 +389,7 @@ class CategoryTest extends TestCase
 		$this->assertTrue($this->level3Category->isLeaf());
 	}
 	
-	/**
-	 * @test
-	 * @return void
-	 */
+	#[Test]
 	public function deleting_nodes_will_remove_any_related_descendants(): void
 	{
 		$this->level2Category->delete();
@@ -501,10 +400,9 @@ class CategoryTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @throws Exception
 	 */
+	#[Test]
 	public function it_knows_if_the_tree_structure_is_broken(): void
 	{
 		$this->assertFalse(Category::isBroken());
@@ -513,10 +411,9 @@ class CategoryTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @throws Exception
 	 */
+	#[Test]
 	public function it_knows_about_the_structural_errors(): void
 	{
 		Category::where('id', $this->level2Category->id)->update(['parent_id' => random_int(50, 60)]);
@@ -529,10 +426,9 @@ class CategoryTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @throws Exception
 	 */
+	#[Test]
 	public function it_knows_how_to_fix_the_structural_errors(): void
 	{
 		Category::where('id', $this->level2Category->id)->update(['parent_id' => random_int(50, 60)]);

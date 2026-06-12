@@ -6,6 +6,7 @@ namespace AliBayat\LaravelCategorizable\Tests\Feature;
 
 use AliBayat\LaravelCategorizable\{Categorizable, Category, Tests\Post, Tests\TestCase};
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 
 class CategorizableTest extends TestCase
 {
@@ -32,10 +33,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::attachCategory()
 	 */
+	#[Test]
 	public function models_can_be_attached_to_categories(): void
 	{
 		$this->post->attachCategory($this->category);
@@ -48,10 +48,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::detachCategory()
 	 */
+	#[Test]
 	public function models_can_be_detached_from_categories(): void
 	{
 		$this->post->attachCategory($this->category);
@@ -65,10 +64,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::syncCategories()
 	 */
+	#[Test]
 	public function all_categories_of_a_model_can_be_synchronized(): void
 	{
 		// single
@@ -104,10 +102,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::syncCategories()
 	 */
+	#[Test]
 	public function all_categories_of_a_model_can_be_deleted(): void
 	{
 		$otherCategory = Category::create(['name' => $this->faker->title]);
@@ -132,10 +129,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::hasCategory()
 	 */
+	#[Test]
 	public function a_model_knows_if_its_attached_to_a_given_category(): void
 	{
 		$this->post->attachCategory($this->category);
@@ -144,10 +140,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::hasCategory()
 	 */
+	#[Test]
 	public function a_model_knows_if_its_attached_to_the_given_categories(): void
 	{
 		$otherCategory = Category::create(['name' => $this->faker->title]);
@@ -158,10 +153,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Categorizable::categoriesList()
 	 */
+	#[Test]
 	public function a_model_knows_about_the_list_of_its_categories(): void
 	{
 		$otherCategory = Category::create(['name' => $this->faker->title]);
@@ -179,10 +173,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Category::entries()
 	 */
+	#[Test]
 	public function a_category_knows_about_the_list_of_models_attached_to_it(): void
 	{
 		$otherPost = Post::create(['title' => $this->faker->title, 'body' => $this->faker->paragraph]);
@@ -206,10 +199,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Category::allEntries()
 	 */
+	#[Test]
 	public function a_category_knows_about_the_list_of_models_attached_to_it_and_its_children(): void
 	{
 		// root has 2 posts, level 1 has 1 post, and level 2 has 1 post.
@@ -252,10 +244,9 @@ class CategorizableTest extends TestCase
 	}
 	
 	/**
-	 * @test
-	 * @return void
 	 * @see Category::tree()
 	 */
+	#[Test]
 	public function category_model_knows_about_the_hierarchy_nested_structure_tree(): void
 	{
 		$categoryLevel1 = Category::create(['name' => $this->faker->title]);

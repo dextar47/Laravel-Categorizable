@@ -17,15 +17,15 @@
     }
   ],
   "require": {
-    "php": "^8.0|^8.1|^8.2|^8.3",
-    "illuminate/database": "^8.40.0|^9.0|^10.0|^11.0",
-    "illuminate/support": "^8.40.0|^9.0|^10.0|^11.0",
-    "kalnoy/nestedset": "^6.0",
-    "spatie/laravel-sluggable": "^2.2|^3.3|^3.4|^3.6"
+    "php": "^8.3",
+    "illuminate/database": "^12.0|^13.0",
+    "illuminate/support": "^12.0|^13.0",
+    "kalnoy/nestedset": "^6.0|^7.0",
+    "spatie/laravel-sluggable": "^4.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "orchestra/testbench": "^7.0"
+    "phpunit/phpunit": "^11.0|^12.0",
+    "orchestra/testbench": "^10.0|^11.0"
   },
   "autoload": {
     "psr-4": {
@@ -55,7 +55,7 @@
   "prefer-stable": true,
   "scripts": {
     "test": [
-      "./vendor/bin/phpunit --testdox --configuration phpunit.xml --coverage-text --verbose --stop-on-failure"
+      "./vendor/bin/phpunit --testdox --configuration phpunit.xml"
     ]
   }
 }

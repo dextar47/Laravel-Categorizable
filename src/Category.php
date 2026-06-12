@@ -84,37 +84,33 @@ class Category extends Model
     }
 
     /**
-     * Spatie sluggable options
-     */    
+     * Spatie sluggable options.
+     * Uses a Closure for generateSlugsFrom to apply Persian slug transformation,
+     * compatible with spatie/laravel-sluggable v4+.
+     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
-    
+
     /**
-     * Generate a non unique slug for the record.
+     * Override spatie/laravel-sluggable's slugifySource method to support Persian characters.
      */
-    protected function generateNonUniqueSlug(): string
+    public function slugifySource(string $source, SlugOptions $options): string
     {
-        if ($this->hasCustomSlugBeenUsed()) {
-            $slugField = $this->slugOptions->slugField;
-
-            return $this->$slugField;
-        }
-
-        return $this->persianSlug(
-            $this->getSlugSourceString(), 
-            $this->slugOptions->slugSeparator
-        );
+        return $this->persianSlug($source, $options->slugSeparator);
     }
-    
+
     /**
      * Fixes the persian slug if necessary.
      */
-    protected function persianSlug($title, string $separator = '-'): string
+    protected function persianSlug(?string $title, string $separator = '-'): string
     {
+        if ($title === null || $title === '') {
+            return '';
+        }
         $title = trim($title);
         $title = mb_strtolower($title, 'UTF-8');
         $title = str_replace('‌', $separator, $title);
@@ -125,6 +121,6 @@ class Category extends Model
         );
         $title = preg_replace('/[\s\-_]+/', ' ', $title);
         $title = preg_replace('/[\s_]/', $separator, $title);
-	    return trim($title, $separator);
-    }    
+        return trim($title, $separator);
+    }
 }

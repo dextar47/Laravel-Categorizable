@@ -9,6 +9,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\{Application, Testing\DatabaseMigrations};
 use Kalnoy\Nestedset\NestedSet;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\Sluggable\SluggableServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -43,6 +44,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             CategorizableServiceProvider::class,
+            SluggableServiceProvider::class,
         ];
     }
 	
@@ -58,6 +60,13 @@ abstract class TestCase extends Orchestra
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
+        ]);
+        
+        // Ensure spatie/laravel-sluggable actions configuration is loaded
+        $app['config']->set('sluggable.actions', [
+            'generate_slug' => \AliBayat\LaravelCategorizable\Tests\CustomGenerateSlugAction::class,
+            'build_self_healing_route_key' => \Spatie\Sluggable\Actions\BuildSelfHealingRouteKeyAction::class,
+            'extract_identifier_from_self_healing_route_key' => \Spatie\Sluggable\Actions\ExtractIdentifierFromSelfHealingRouteKeyAction::class,
         ]);
     }
 	
