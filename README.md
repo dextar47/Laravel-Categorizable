@@ -8,8 +8,8 @@ There is also a `Category` model which you can use directly or extend it in your
 
 
 ## Requirements
-- PHP 8+
-- Laravel 8+
+- PHP 8.3
+- Laravel 12, 13
 
 ## Installation
 
